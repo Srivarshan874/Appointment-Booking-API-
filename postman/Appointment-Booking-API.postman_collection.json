@@ -1,0 +1,214 @@
+{
+  "info": {
+    "name": "SapphireIQ Appointment Booking API",
+    "description": "Authentication, roles, slots, booking, cancellation and double-booking prevention.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:5003"
+    },
+    {
+      "key": "token",
+      "value": "PASTE_JWT_HERE"
+    },
+    {
+      "key": "slotId",
+      "value": "PASTE_SLOT_ID_HERE"
+    },
+    {
+      "key": "bookingId",
+      "value": "PASTE_BOOKING_ID_HERE"
+    }
+  ],
+  "item": [
+    {
+      "name": "Health",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/health"
+      }
+    },
+    {
+      "name": "Register provider",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Dr. Asha Raman\",\n  \"email\": \"asha.provider@example.com\",\n  \"password\": \"DemoPass123!\",\n  \"role\": \"provider\"\n}"
+        },
+        "url": "{{baseUrl}}/api/auth/register"
+      }
+    },
+    {
+      "name": "Register user",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Demo User\",\n  \"email\": \"demo.user@example.com\",\n  \"password\": \"DemoPass123!\",\n  \"role\": \"user\"\n}"
+        },
+        "url": "{{baseUrl}}/api/auth/register"
+      }
+    },
+    {
+      "name": "Login",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"demo.user@example.com\",\n  \"password\": \"DemoPass123!\"\n}"
+        },
+        "url": "{{baseUrl}}/api/auth/login"
+      }
+    },
+    {
+      "name": "Current user",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": "{{baseUrl}}/api/auth/me"
+      }
+    },
+    {
+      "name": "Provider create slot",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"startTime\": \"2026-11-12T10:00:00.000Z\",\n  \"endTime\": \"2026-11-12T10:30:00.000Z\",\n  \"location\": \"Online\",\n  \"notes\": \"Postman test slot\"\n}"
+        },
+        "url": "{{baseUrl}}/api/slots"
+      }
+    },
+    {
+      "name": "Available slots",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/slots/available?limit=50"
+      }
+    },
+    {
+      "name": "Provider's slots",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": "{{baseUrl}}/api/slots/mine"
+      }
+    },
+    {
+      "name": "Get slot",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/slots/{{slotId}}"
+      }
+    },
+    {
+      "name": "Book slot (user token)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"slotId\": \"{{slotId}}\"\n}"
+        },
+        "url": "{{baseUrl}}/api/bookings"
+      }
+    },
+    {
+      "name": "My bookings",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": "{{baseUrl}}/api/bookings/mine"
+      }
+    },
+    {
+      "name": "Cancel booking",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": "{{baseUrl}}/api/bookings/{{bookingId}}/cancel"
+      }
+    },
+    {
+      "name": "Double-booking conflict test",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"slotId\": \"{{slotId}}\"\n}"
+        },
+        "url": "{{baseUrl}}/api/bookings"
+      }
+    }
+  ]
+}
