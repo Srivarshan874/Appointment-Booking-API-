@@ -10,5 +10,5 @@ export default async function connectDB() {
   await mongoose.connect(uri, { serverSelectionTimeoutMS: 10000 });
   // Wait for indexes, including the unique active-booking index, before accepting requests.
   await Promise.all([User.init(), Slot.init(), Booking.init()]);
-  console.logh`MongoDB connected: ${mongoose.connection.name}`);
+  console.log(`MongoDB connected: ${mongoose.connection.name}`);
 }
